@@ -28,7 +28,7 @@ object HandlerActor {
 
   /**
    * Create an asynchronous Handler that runs tasks on a separate HandlerThread,
-   * one looper is passed in as parameter.
+   * one whose looper is passed in as parameter.
    */
   def async(looper: Looper,
             callback: Handler.Callback): HandlerActor = {

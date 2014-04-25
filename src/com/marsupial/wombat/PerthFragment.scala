@@ -8,6 +8,9 @@ import android.view.View
 import com.marsupial.wombat.service.{HandlerActor, EventHub, AppService}
 import com.marsupial.wombat.PerthFragment.{RequestStatus, ShowStatus, DisplayWombat}
 
+/**
+ * Shows a skyline of Perth
+ */
 class PerthFragment extends Fragment
                             with AppService.FragmentInjection
                             with FragmentViewUtil

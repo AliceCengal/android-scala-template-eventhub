@@ -38,7 +38,7 @@ private[service] class EventHub extends Handler.Callback {
     true
   }
 
-  def purgeSubscribers(who: HandlerActor): Unit = {
+  private def purgeSubscribers(who: HandlerActor): Unit = {
     subscribers.retain((weakHandler) => {
       weakHandler.get.isDefined && weakHandler() != who
     })
@@ -52,4 +52,5 @@ private[service] class EventHub extends Handler.Callback {
       maybeHandler ! event
     }
   }
+
 }

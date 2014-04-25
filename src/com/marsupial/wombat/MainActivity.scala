@@ -4,6 +4,9 @@ import android.app.{Fragment, Activity}
 import android.os.{Message, Handler, Bundle}
 import com.marsupial.wombat.service.{HandlerActor, EventHub, AppService}
 
+/**
+ * The starting point of the app.
+ */
 class MainActivity extends Activity
                            with AppService.ActivityInjection
                            with Handler.Callback {
