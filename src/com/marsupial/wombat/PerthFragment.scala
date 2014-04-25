@@ -17,7 +17,6 @@ class PerthFragment extends Fragment
                             with Handler.Callback {
 
   import PerthFragment._
-  import MainActivity._
 
   val bridge = HandlerActor.sync(this)
 
@@ -59,5 +58,17 @@ object PerthFragment {
    * User wants to see a wombat.
    */
   case object DisplayWombat
+
+  /**
+   * Request for a broadcast of the current status.
+   */
+  case object BroadcastStatus
+
+  /**
+   * Current status, in this case the user's affinity to wombats.
+   */
+  abstract class CurrentStatus
+  case object Clean extends CurrentStatus
+  case class WombatLover(affinity: String) extends CurrentStatus
 
 }
