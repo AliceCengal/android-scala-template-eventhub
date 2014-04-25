@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Button
 
 import com.marsupial.wombat.service.AppService
-import com.marsupial.wombat.WombatFragment.DoneWatchingWombat
 
 /**
  * Page where you can gaze on a wombat.
@@ -14,6 +13,8 @@ class WombatFragment extends Fragment
                              with AppService.FragmentInjection
                              with FragmentViewUtil
                              with View.OnClickListener {
+
+  import WombatFragment._
 
   def layoutId: Int = R.layout.wombat_layout
 

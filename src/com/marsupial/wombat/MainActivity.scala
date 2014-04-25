@@ -2,10 +2,13 @@ package com.marsupial.wombat
 
 import android.app.{Fragment, Activity}
 import android.os.{Message, Handler, Bundle}
+
 import com.marsupial.wombat.service.{HandlerActor, EventHub, AppService}
 
 /**
- * The starting point of the app.
+ * The starting point of the app. This Activity does not show any UI directly,
+ * instead delegating that task to the Fragments. It also handles interaction and
+ * transition between Fragments.
  */
 class MainActivity extends Activity
                            with AppService.ActivityInjection
@@ -14,9 +17,6 @@ class MainActivity extends Activity
   val bridge = HandlerActor.sync(this)
   var startTime = -1L
 
-  /**
-   * Called when the activity is first created.
-   */
   override def onCreate(saved: Bundle) {
     super.onCreate(saved)
     setContentView(R.layout.main)

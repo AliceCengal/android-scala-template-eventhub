@@ -6,7 +6,6 @@ import android.widget.{TextView, Button}
 import android.view.View
 
 import com.marsupial.wombat.service.{HandlerActor, EventHub, AppService}
-import com.marsupial.wombat.PerthFragment.{RequestStatus, ShowStatus, DisplayWombat}
 
 /**
  * Shows a skyline of Perth
@@ -16,6 +15,8 @@ class PerthFragment extends Fragment
                             with FragmentViewUtil
                             with View.OnClickListener
                             with Handler.Callback {
+
+  import PerthFragment._
 
   val bridge = HandlerActor.sync(this)
 
@@ -51,10 +52,19 @@ class PerthFragment extends Fragment
 
 object PerthFragment {
 
+  /**
+   * User wants to see a wombat.
+   */
   case object DisplayWombat
 
+  /**
+   * What's going on?
+   */
   case object RequestStatus
 
+  /**
+   * Will display this text on this page.
+   */
   case class ShowStatus(status: String)
 
 }
