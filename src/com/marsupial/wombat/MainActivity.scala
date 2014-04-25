@@ -14,6 +14,8 @@ class MainActivity extends Activity
                            with AppService.ActivityInjection
                            with Handler.Callback {
 
+  import MainActivity._
+
   val bridge = HandlerActor.sync(this)
   var startTime = -1L
 
@@ -39,11 +41,11 @@ class MainActivity extends Activity
         startTime = System.currentTimeMillis()
         addFragment(new WombatFragment)
 
-      case PerthFragment.RequestStatus =>
+      case BroadcastStatus =>
         if (startTime == -1L) {
-          app.eventHub ! PerthFragment.ShowStatus("Click to see a wombat")
+          app.eventHub ! Clean
         } else {
-          app.eventHub ! PerthFragment.ShowStatus("You spied a wombat for " + startTime + " seconds")
+          app.eventHub ! WombatLover("You spied a wombat for " + startTime + " seconds")
         }
 
       case WombatFragment.DoneWatchingWombat =>
@@ -63,4 +65,21 @@ class MainActivity extends Activity
                 fragment).
         commit()
   }
+
+}
+
+object MainActivity {
+
+  /**
+   * Request for a broadcast of the current status.
+   */
+  case object BroadcastStatus
+
+  /**
+   * Current status, in this case the user's affinity to wombats.
+   */
+  abstract class CurrentStatus
+  case object Clean extends CurrentStatus
+  case class WombatLover(affinity: String) extends CurrentStatus
+
 }

@@ -17,6 +17,7 @@ class PerthFragment extends Fragment
                             with Handler.Callback {
 
   import PerthFragment._
+  import MainActivity._
 
   val bridge = HandlerActor.sync(this)
 
@@ -29,7 +30,7 @@ class PerthFragment extends Fragment
     super.onStart()
     app.eventHub ! EventHub.Subscribe(bridge)
     btnSwitch.setOnClickListener(this)
-    app.eventHub ! RequestStatus
+    app.eventHub ! BroadcastStatus
   }
 
   override def onStop() {
@@ -39,8 +40,9 @@ class PerthFragment extends Fragment
 
   def handleMessage(msg: Message): Boolean = {
     msg.obj match {
-      case ShowStatus(status) => textStatus.setText(status)
-      case _                  => /* Do nothing */
+      case Clean                 => textStatus.setText("Click to see a wombat")
+      case WombatLover(affinity) => textStatus.setText(affinity)
+      case _                     => /* Do nothing */
     }
     true
   }
@@ -48,6 +50,7 @@ class PerthFragment extends Fragment
   def onClick(v: View): Unit = {
     app.eventHub ! DisplayWombat
   }
+
 }
 
 object PerthFragment {
@@ -56,15 +59,5 @@ object PerthFragment {
    * User wants to see a wombat.
    */
   case object DisplayWombat
-
-  /**
-   * What's going on?
-   */
-  case object RequestStatus
-
-  /**
-   * Will display this text on this page.
-   */
-  case class ShowStatus(status: String)
 
 }
