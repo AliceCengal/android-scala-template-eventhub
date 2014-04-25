@@ -14,8 +14,8 @@ class MainActivity extends Activity
                            with AppService.ActivityInjection
                            with Handler.Callback {
 
-  val bridge = HandlerActor.sync(this)
-  var startTime = -1L
+  private val bridge = HandlerActor.sync(this)
+  private var startTime = -1L
 
   override def onCreate(saved: Bundle) {
     super.onCreate(saved)
@@ -33,7 +33,7 @@ class MainActivity extends Activity
     app.eventHub ! EventHub.Unsubscribe(bridge)
   }
 
-  def handleMessage(msg: Message): Boolean = {
+  override def handleMessage(msg: Message): Boolean = {
     msg.obj match {
       case PerthFragment.DisplayWombat =>
         startTime = System.currentTimeMillis()
@@ -56,7 +56,7 @@ class MainActivity extends Activity
     true
   }
 
-  def addFragment(fragment: Fragment) {
+  private def addFragment(fragment: Fragment) {
     getFragmentManager.
         beginTransaction().
         replace(android.R.id.content,

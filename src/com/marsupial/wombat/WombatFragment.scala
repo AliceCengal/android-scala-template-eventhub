@@ -16,16 +16,16 @@ class WombatFragment extends Fragment
 
   import WombatFragment._
 
-  def layoutId: Int = R.layout.wombat_layout
+  private def btnBack = component[Button](R.id.button)
 
-  def btnBack = component[Button](R.id.button)
+  override def layoutId: Int = R.layout.wombat_layout
 
   override def onStart() {
     super.onStart()
     btnBack.setOnClickListener(this)
   }
 
-  def onClick(v: View): Unit = {
+  override def onClick(v: View): Unit = {
     app.eventHub ! DoneWatchingWombat
   }
 

@@ -18,12 +18,12 @@ class PerthFragment extends Fragment
 
   import PerthFragment._
 
-  val bridge = HandlerActor.sync(this)
+  private val bridge = HandlerActor.sync(this)
 
-  def layoutId = R.layout.perth_layout
+  private def btnSwitch = component[Button](R.id.button)
+  private def textStatus = component[TextView](R.id.textView)
 
-  def btnSwitch = component[Button](R.id.button)
-  def textStatus = component[TextView](R.id.textView)
+  override def layoutId = R.layout.perth_layout
 
   override def onStart() {
     super.onStart()
@@ -37,7 +37,7 @@ class PerthFragment extends Fragment
     app.eventHub ! EventHub.Unsubscribe(bridge)
   }
 
-  def handleMessage(msg: Message): Boolean = {
+  override def handleMessage(msg: Message): Boolean = {
     msg.obj match {
       case Clean                 => textStatus.setText("Click to see a wombat")
       case WombatLover(affinity) => textStatus.setText(affinity)
@@ -46,7 +46,7 @@ class PerthFragment extends Fragment
     true
   }
 
-  def onClick(v: View): Unit = {
+  override def onClick(v: View): Unit = {
     app.eventHub ! DisplayWombat
   }
 
