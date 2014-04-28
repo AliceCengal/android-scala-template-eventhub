@@ -1,9 +1,9 @@
 package com.marsupial.wombat.service
 
 import scala.collection.mutable
+import scala.ref.WeakReference
 
 import android.os.{Message, Handler}
-import scala.ref.WeakReference
 
 /**
  * A global event hub that allows different components of
@@ -27,7 +27,7 @@ private[service] class EventHub extends Handler.Callback {
 
   import EventHub._
 
-  private val subscribers: mutable.Set[WeakReference[HandlerActor]] = mutable.Set.empty
+  private val subscribers = mutable.Set.empty[WeakReference[HandlerActor]]
 
   def handleMessage(incoming: Message): Boolean = {
     incoming.obj match {

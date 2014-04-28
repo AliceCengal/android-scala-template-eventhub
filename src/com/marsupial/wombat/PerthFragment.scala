@@ -67,7 +67,7 @@ object PerthFragment {
   /**
    * Current status, in this case the user's affinity to wombats.
    */
-  abstract class CurrentStatus
+  sealed abstract class CurrentStatus
   case object Clean extends CurrentStatus
   case class WombatLover(affinity: String) extends CurrentStatus
 

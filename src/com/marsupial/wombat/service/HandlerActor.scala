@@ -10,11 +10,19 @@ trait HandlerActor extends Handler {
   def !(msg: AnyRef): Unit = {
     Message.obtain(this, 0, msg).sendToTarget()
   }
-
-  def request(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
-    this ! (requester, msg)
+  
+  def tell(msg: AnyRef): Unit = {
+    Message.obtain(this, 0, msg).sendToTarget()
   }
 
+  def ?(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
+    Message.obtain(this, 0, (requester, msg)).sendToTarget()
+  }
+
+  def request(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
+    Message.obtain(this, 0, (requester, msg)).sendToTarget()
+  }
+  
 }
 
 object HandlerActor {

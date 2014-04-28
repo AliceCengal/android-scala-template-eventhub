@@ -18,7 +18,7 @@ class WombatFragment extends Fragment
 
   private def btnBack = component[Button](R.id.button)
 
-  override def layoutId: Int = R.layout.wombat_layout
+  override def layoutId = R.layout.wombat_layout
 
   override def onStart() {
     super.onStart()
