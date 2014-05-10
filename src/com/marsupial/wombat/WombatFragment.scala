@@ -4,7 +4,7 @@ import android.app.Fragment
 import android.view.View
 import android.widget.Button
 
-import com.marsupial.wombat.service.AppService
+import com.marsupial.wombat.service.{ActorConversion, AppService}
 
 /**
  * Page where you can gaze on a wombat.
@@ -12,8 +12,9 @@ import com.marsupial.wombat.service.AppService
 class WombatFragment extends Fragment
                              with AppService.FragmentInjection
                              with FragmentViewUtil
-                             with View.OnClickListener {
-
+                             with View.OnClickListener
+                             with ActorConversion
+{
   import WombatFragment._
 
   private def btnBack = component[Button](R.id.button)

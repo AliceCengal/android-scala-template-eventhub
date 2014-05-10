@@ -5,24 +5,53 @@ import android.os.{Looper, Message, Handler}
 /**
  * A basic Actor that uses Android's messaging framework.
  */
-trait HandlerActor extends Handler {
+trait HandlerActor extends Handler with Actor {
 
-  def !(msg: AnyRef): Unit = {
+  override def !(msg: AnyRef): Unit = {
     Message.obtain(this, 0, msg).sendToTarget()
   }
   
-  def tell(msg: AnyRef): Unit = {
+  override def tell(msg: AnyRef): Unit = {
     Message.obtain(this, 0, msg).sendToTarget()
   }
 
-  def ?(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
+  override def ?(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
     Message.obtain(this, 0, (requester, msg)).sendToTarget()
   }
 
-  def request(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
+  override def request(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
     Message.obtain(this, 0, (requester, msg)).sendToTarget()
   }
   
+}
+
+trait Actor {
+  def !(msg: AnyRef): Unit
+  def ?(msg: AnyRef)(implicit requester: HandlerActor): Unit
+  def tell(msg: AnyRef): Unit
+  def request(msg: AnyRef)(implicit requester: HandlerActor): Unit
+}
+
+class ActorShell(h: Handler) extends Actor {
+  override def !(msg: AnyRef): Unit = {
+    Message.obtain(h, 0, msg).sendToTarget()
+  }
+
+  override def tell(msg: AnyRef): Unit = {
+    Message.obtain(h, 0, msg).sendToTarget()
+  }
+
+  override def ?(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
+    Message.obtain(h, 0, (requester, msg)).sendToTarget()
+  }
+
+  override def request(msg: AnyRef)(implicit requester: HandlerActor): Unit = {
+    Message.obtain(h, 0, (requester, msg)).sendToTarget()
+  }
+}
+
+trait ActorConversion {
+  implicit def handlerToActor(h: Handler): Actor = new ActorShell(h)
 }
 
 object HandlerActor {

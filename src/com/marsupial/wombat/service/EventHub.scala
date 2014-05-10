@@ -14,33 +14,32 @@ object EventHub {
   /**
    * Subscribe to the global event stream
    */
-  case class Subscribe(who: HandlerActor)
+  case class Subscribe(who: Handler)
 
   /**
    * Unsubscribe from the global event stream
    */
-  case class Unsubscribe(who: HandlerActor)
+  case class Unsubscribe(who: Handler)
 
 }
 
-private[service] class EventHub extends Handler.Callback {
-
+private[service] class EventHub extends Handler.Callback with ActorConversion {
   import EventHub._
 
-  private val subscribers = mutable.Set.empty[WeakReference[HandlerActor]]
+  private val subscribers = mutable.Set.empty[WeakReference[Handler]]
 
   def handleMessage(incoming: Message): Boolean = {
     incoming.obj match {
-      case Subscribe(who)   => subscribers.add(new WeakReference[HandlerActor](who))
+      case Subscribe(who)   => subscribers.add(new WeakReference[Handler](who))
       case Unsubscribe(who) => purgeSubscribers(who)
       case a: AnyRef        => broadcastEvent(a)
     }
     true
   }
 
-  private def purgeSubscribers(who: HandlerActor): Unit = {
+  private def purgeSubscribers(who: Handler): Unit = {
     subscribers.retain((weakHandler) => {
-      weakHandler.get.isDefined && weakHandler() != who
+      weakHandler.get.isDefined && (weakHandler() ne who)
     })
   }
 

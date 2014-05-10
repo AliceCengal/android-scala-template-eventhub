@@ -1,20 +1,21 @@
 package com.marsupial.wombat.service
 
 import android.app.{Activity, Fragment}
+import android.os.Handler
 
 /**
  * Provide global backend services
  */
 class AppService extends android.app.Application {
 
-  private val eventHubHandle = HandlerActor.sync(new EventHub)
+  private val eventHubHandle = new Handler(new EventHub)
 
   override def onCreate() {
     super.onCreate()
     // Do other initialization
   }
 
-  def eventHub: HandlerActor = eventHubHandle
+  def eventHub: Handler = eventHubHandle
 
 }
 
