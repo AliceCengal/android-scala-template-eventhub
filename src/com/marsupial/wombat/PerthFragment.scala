@@ -11,11 +11,11 @@ import com.marsupial.wombat.service._
  * Shows a skyline of Perth
  */
 class PerthFragment extends Fragment
-                            with AppService.FragmentInjection
+                            with ChattyFragment
                             with Helpers.EasyFragment
+                            with AppService.FragmentInjection
                             with View.OnClickListener
                             with Handler.Callback
-                            with ChattyFrag
 {
   import PerthFragment._
 

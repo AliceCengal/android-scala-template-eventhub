@@ -62,7 +62,7 @@ trait ActorConversion {
  *
  * Created by athran on 5/8/14.
  */
-trait ChattyFrag extends Fragment with ActorConversion {
+trait ChattyFragment extends Fragment with ActorConversion {
   self: Handler.Callback with AppService.FragmentInjection =>
 
   implicit lazy val communicator = new Handler(this)
