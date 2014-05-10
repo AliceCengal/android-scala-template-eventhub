@@ -5,7 +5,7 @@ import android.os.{Message, Handler}
 import android.widget.{TextView, Button}
 import android.view.View
 
-import com.marsupial.wombat.service.{ActorConversion, EventHub, AppService}
+import com.marsupial.wombat.service.{ChattyFrag, ActorConversion, EventHub, AppService}
 
 /**
  * Shows a skyline of Perth
@@ -15,27 +15,19 @@ class PerthFragment extends Fragment
                             with FragmentViewUtil
                             with View.OnClickListener
                             with Handler.Callback
-                            with ActorConversion
+                            with ChattyFrag
 {
   import PerthFragment._
 
-  private val bridge = new Handler(this)
-
-  private def btnSwitch = component[Button](R.id.button)
+  private def btnSwitch  = component[Button](R.id.button)
   private def textStatus = component[TextView](R.id.textView)
 
   override def layoutId = R.layout.perth_layout
 
   override def onStart() {
     super.onStart()
-    app.eventHub ! EventHub.Subscribe(bridge)
     btnSwitch.setOnClickListener(this)
     app.eventHub ! BroadcastStatus
-  }
-
-  override def onStop() {
-    super.onStop()
-    app.eventHub ! EventHub.Unsubscribe(bridge)
   }
 
   override def handleMessage(msg: Message): Boolean = {
