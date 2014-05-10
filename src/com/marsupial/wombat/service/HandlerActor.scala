@@ -2,6 +2,7 @@ package com.marsupial.wombat.service
 
 import android.os.{Message, Handler}
 import android.app.{Activity, Fragment}
+import android.content.Context
 
 /**
  * A basic Actor that uses Android's messaging framework.
@@ -98,3 +99,23 @@ trait ChattyActivity extends Activity with ActorConversion {
 
 }
 
+abstract class Server extends Handler.Callback {
+
+  def init(ctx: Context): Unit
+
+  def handleRequest(req: AnyRef): Unit
+
+  var requester: HandlerActor = null
+
+  override def handleMessage(msg: Message): Boolean = {
+    msg.obj match {
+      case Initialize(ctx) => init(ctx)
+      case (r: HandlerActor, req: AnyRef) =>
+        requester = r
+        handleRequest(req)
+    }
+    true
+  }
+}
+
+private[service] case class Initialize(ctx: Context)
