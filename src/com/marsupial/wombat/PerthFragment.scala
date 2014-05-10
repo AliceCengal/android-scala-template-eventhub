@@ -5,14 +5,14 @@ import android.os.{Message, Handler}
 import android.widget.{TextView, Button}
 import android.view.View
 
-import com.marsupial.wombat.service.{ChattyFrag, ActorConversion, EventHub, AppService}
+import com.marsupial.wombat.service._
 
 /**
  * Shows a skyline of Perth
  */
 class PerthFragment extends Fragment
                             with AppService.FragmentInjection
-                            with FragmentViewUtil
+                            with Helpers.EasyFragment
                             with View.OnClickListener
                             with Handler.Callback
                             with ChattyFrag

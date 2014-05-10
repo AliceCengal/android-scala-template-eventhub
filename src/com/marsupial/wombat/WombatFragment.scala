@@ -4,14 +4,14 @@ import android.app.Fragment
 import android.view.View
 import android.widget.Button
 
-import com.marsupial.wombat.service.{ActorConversion, AppService}
+import com.marsupial.wombat.service.{Helpers, ActorConversion, AppService}
 
 /**
  * Page where you can gaze on a wombat.
  */
 class WombatFragment extends Fragment
                              with AppService.FragmentInjection
-                             with FragmentViewUtil
+                             with Helpers.EasyFragment
                              with View.OnClickListener
                              with ActorConversion
 {
