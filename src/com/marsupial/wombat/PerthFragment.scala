@@ -13,7 +13,6 @@ import com.marsupial.wombat.service._
 class PerthFragment extends Fragment
                             with ChattyFragment
                             with Helpers.EasyFragment
-                            with AppService.FragmentInjection
                             with View.OnClickListener
                             with Handler.Callback
 {

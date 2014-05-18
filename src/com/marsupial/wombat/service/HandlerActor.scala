@@ -57,13 +57,15 @@ trait ActorConversion {
  * as well as the `ActorConversion` mixin
  *
  * The Fragment that wants to mix this trait in must implement Handler.Callback
- * to handle incoming messages, and AppService.FragmentInjection for access
- * to the Global EventHub
+ * to handle incoming messages.
  *
  * Created by athran on 5/8/14.
  */
-trait ChattyFragment extends Fragment with ActorConversion {
-  self: Handler.Callback with AppService.FragmentInjection =>
+trait ChattyFragment extends Fragment
+                             with ActorConversion
+                             with AppService.FragmentInjection
+{
+  self: Handler.Callback =>
 
   implicit lazy val communicator = new Handler(this)
 
@@ -82,8 +84,11 @@ trait ChattyFragment extends Fragment with ActorConversion {
 /**
  * Same as ChattyFrag, but for Activity.
  */
-trait ChattyActivity extends Activity with ActorConversion {
-  self: Handler.Callback with AppService.ActivityInjection =>
+trait ChattyActivity extends Activity
+                             with ActorConversion
+                             with AppService.ActivityInjection
+{
+  self: Handler.Callback =>
 
   implicit lazy val communicator = new Handler(this)
 

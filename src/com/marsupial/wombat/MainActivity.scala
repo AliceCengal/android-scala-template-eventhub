@@ -3,7 +3,7 @@ package com.marsupial.wombat
 import android.app.{Fragment, Activity}
 import android.os.{Message, Handler, Bundle}
 
-import com.marsupial.wombat.service.{ActorConversion, EventHub, AppService}
+import com.marsupial.wombat.service.{ChattyActivity, ActorConversion, EventHub, AppService}
 
 /**
  * The starting point of the app. This Activity does not show any UI directly,
@@ -11,27 +11,15 @@ import com.marsupial.wombat.service.{ActorConversion, EventHub, AppService}
  * transition between Fragments.
  */
 class MainActivity extends Activity
-                           with AppService.ActivityInjection
+                           with ChattyActivity
                            with Handler.Callback
-                           with ActorConversion
 {
-  private val bridge = new Handler(this)
   private var startTime = -1L
 
   override def onCreate(saved: Bundle) {
     super.onCreate(saved)
     setContentView(R.layout.main)
     addFragment(new PerthFragment)
-  }
-
-  override def onStart() {
-    super.onStart()
-    app.eventHub ! EventHub.Subscribe(bridge)
-  }
-
-  override def onStop() {
-    super.onStop()
-    app.eventHub ! EventHub.Unsubscribe(bridge)
   }
 
   override def handleMessage(msg: Message): Boolean = {
