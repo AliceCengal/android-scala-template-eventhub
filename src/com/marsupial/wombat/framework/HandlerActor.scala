@@ -41,7 +41,7 @@ class ActorShell(h: Handler) extends HandlerActor {
  * Mixin to provide the Erlang-inspired Actor DSL to Android's Handler.
  *
  * Mix this trait into a class, or extends the ChattyFragment/ChattyActivity
- * trait for a more complete package.
+ * or Server traits for a more complete package.
  */
 trait ActorConversion {
   implicit def handlerToActor(h: Handler): HandlerActor = new ActorShell(h)
@@ -106,8 +106,10 @@ trait ChattyActivity extends Activity
  * although the class that extends this trait could also extend Service because
  * the async mode of communication through Handlers is the same.
  */
-trait Server extends Handler.Callback with DefaultNullProvider {
-
+trait Server extends Handler.Callback
+                     with DefaultNullProvider
+                     with ActorConversion
+{
   /**
    * Override this to handle requests.
    */

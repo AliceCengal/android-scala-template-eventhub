@@ -4,38 +4,6 @@ import android.app.{Fragment, Activity}
 import android.os.Handler
 
 /**
- * Mixin intended for the companion object of the app's subclass of
- * android.app.Application.
- *
- * Created by athran on 5/18/14.
- */
-abstract class ApplicationInjection[APP <: android.app.Application with EventfulApp] {
-
-  /**
-   * Allow easy access to the Application object in Activity
-   */
-  trait ActivityInjection {
-    self: Activity =>
-
-    def app = self.getApplication.asInstanceOf[APP]
-
-  }
-
-  /**
-   * Allow easy access to the Application object in Fragment
-   */
-  trait FragmentInjection {
-    self: Fragment =>
-
-    def app = self.getActivity.getApplication.asInstanceOf[APP]
-
-  }
-
-  case class Initialize(app: APP)
-
-}
-
-/**
  * Allow easy access to the Application object in Activity
  */
 trait ActivityInjection[APP <: EventfulApp] {
@@ -64,7 +32,7 @@ case class Initialize[APP <: EventfulApp](app: APP)
 /**
  * This mixin turns the subclass of Application into an EventHub host.
  */
-trait EventfulApp extends android.app.Application {
+trait EventfulApp extends android.app.Application with ActorConversion {
 
   private val eventHubHandle = new Handler(new EventHub)
 
