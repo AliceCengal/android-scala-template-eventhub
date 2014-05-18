@@ -1,10 +1,10 @@
 package com.marsupial.wombat
 
-import android.app.{Fragment, Activity}
+import android.app.Activity
 import android.os.{Message, Handler, Bundle}
 
-import com.marsupial.wombat.service.ChattyActivity
-import com.marsupial.wombat.service.Helpers.EasyActivity
+import com.marsupial.wombat.framework.{ActivityInjection, Helpers, ChattyActivity}
+import com.marsupial.wombat.service.AppService
 
 /**
  * The starting point of the app. This Activity does not show any UI directly,
@@ -12,9 +12,10 @@ import com.marsupial.wombat.service.Helpers.EasyActivity
  * transition between Fragments.
  */
 class MainActivity extends Activity
+                           with ActivityInjection[AppService]
                            with ChattyActivity
                            with Handler.Callback
-                           with EasyActivity
+                           with Helpers.EasyActivity
 {
   private var startTime = -1L
 

@@ -1,4 +1,4 @@
-package com.marsupial.wombat.service
+package com.marsupial.wombat.framework
 
 import android.app.{FragmentTransaction, Activity, Fragment}
 import android.view.{View, ViewGroup, LayoutInflater}

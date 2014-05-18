@@ -1,8 +1,7 @@
-package com.marsupial.wombat.service
+package com.marsupial.wombat.framework
 
 import android.os.{Message, Handler}
 import android.app.{Activity, Fragment}
-import android.content.Context
 
 /**
  * A basic Actor that uses Android's messaging framework.
@@ -57,15 +56,14 @@ trait ActorConversion {
  * as well as the `ActorConversion` mixin
  *
  * The Fragment that wants to mix this trait in must implement Handler.Callback
- * to handle incoming messages.
+ * to handle incoming messages, and FragmentInjection for access to the EventHub.
  *
  * Created by athran on 5/8/14.
  */
 trait ChattyFragment extends Fragment
                              with ActorConversion
-                             with AppService.FragmentInjection
 {
-  self: Handler.Callback =>
+  self: Handler.Callback with FragmentInjection =>
 
   implicit lazy val communicator = new Handler(this)
 
@@ -82,13 +80,12 @@ trait ChattyFragment extends Fragment
 }
 
 /**
- * Same as ChattyFrag, but for Activity.
+ * Same as ChattyFragment, but for Activity.
  */
 trait ChattyActivity extends Activity
                              with ActorConversion
-                             with AppService.ActivityInjection
 {
-  self: Handler.Callback =>
+  self: Handler.Callback with ActivityInjection =>
 
   implicit lazy val communicator = new Handler(this)
 
@@ -104,23 +101,54 @@ trait ChattyActivity extends Activity
 
 }
 
-abstract class Server extends Handler.Callback {
+/**
+ * Template for backend service. Not the same thing as android.app.Service,
+ * although the class that extends this trait could also extend Service because
+ * the async mode of communication through Handlers is the same.
+ */
+trait Server extends Handler.Callback with DefaultNullProvider {
 
-  def init(ctx: Context): Unit
-
+  /**
+   * Override this to handle requests.
+   */
   def handleRequest(req: AnyRef): Unit
 
-  var requester: HandlerActor = null
+  /**
+   * The sender of the request.
+   */
+  var requester: Handler = null
 
   override def handleMessage(msg: Message): Boolean = {
     msg.obj match {
-      case Initialize(ctx) => init(ctx)
-      case (r: HandlerActor, req: AnyRef) =>
+      case (r: Handler, req: AnyRef) =>
         requester = r
         handleRequest(req)
+      case a: AnyRef =>
+        requester = nullHandler
+        handleRequest(a)
     }
     true
   }
 }
 
-private[service] case class Initialize(ctx: Context)
+trait NullProvider {
+
+  def nullHandler: Handler
+
+}
+
+trait DefaultNullProvider extends NullProvider {
+
+  val defaultNullHandler = new SimpleNullHandler
+
+  override def nullHandler = defaultNullHandler
+
+}
+
+class SimpleNullHandler extends Handler {
+
+  override def handleMessage(msg: Message) {
+    /* Do Nothing */
+  }
+
+}

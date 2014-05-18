@@ -1,4 +1,4 @@
-package com.marsupial.wombat.service
+package com.marsupial.wombat.framework
 
 import scala.collection.mutable
 import scala.ref.WeakReference
