@@ -1,6 +1,6 @@
 package com.marsupial.wombat.service
 
-import android.app.Fragment
+import android.app.{FragmentTransaction, Activity, Fragment}
 import android.view.{View, ViewGroup, LayoutInflater}
 import android.os.Bundle
 
@@ -52,6 +52,20 @@ object Helpers {
     }
 
     def component[T](id: Int) = getView.findViewById(id).asInstanceOf[T]
+
+  }
+
+  /**
+   * This mixin provide boilerplate free Fragment transactions.
+   */
+  trait EasyActivity {
+    self: Activity =>
+
+    def transaction(action: FragmentTransaction => Unit) {
+      val ft = getFragmentManager.beginTransaction()
+      action(ft)
+      ft.commit()
+    }
 
   }
 
