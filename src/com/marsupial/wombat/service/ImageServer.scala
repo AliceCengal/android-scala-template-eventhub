@@ -1,7 +1,7 @@
 package com.marsupial.wombat.service
 
-import com.marsupial.wombat.framework.Server
 import android.graphics.Bitmap
+import com.marsupial.wombat.framework.Server
 
 /**
  * Downloads and caches image on request

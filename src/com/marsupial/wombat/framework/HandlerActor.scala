@@ -69,12 +69,12 @@ trait ChattyFragment extends Fragment
 
   override def onStart() {
     super.onStart()
-    app.eventHub ! EventHub.Subscribe(communicator)
+    app.eventHub request EventHub.Subscribe
   }
 
   override def onStop() {
     super.onStop()
-    app.eventHub ! EventHub.Unsubscribe(communicator)
+    app.eventHub request EventHub.Unsubscribe
   }
 
 }
@@ -91,12 +91,12 @@ trait ChattyActivity extends Activity
 
   override def onStart() {
     super.onStart()
-    app.eventHub ! EventHub.Subscribe(communicator)
+    app.eventHub request EventHub.Subscribe
   }
 
   override def onStop() {
     super.onStop()
-    app.eventHub ! EventHub.Unsubscribe(communicator)
+    app.eventHub request EventHub.Unsubscribe
   }
 
 }
@@ -133,6 +133,9 @@ trait Server extends Handler.Callback
   }
 }
 
+/**
+ * Similar to the DeadLetterOffice in Akka.
+ */
 trait NullProvider {
 
   def nullHandler: Handler
@@ -141,13 +144,11 @@ trait NullProvider {
 
 trait DefaultNullProvider extends NullProvider {
 
-  val defaultNullHandler = new SimpleNullHandler
-
-  override def nullHandler = defaultNullHandler
+  override def nullHandler = SimpleNullHandler
 
 }
 
-class SimpleNullHandler extends Handler {
+private object SimpleNullHandler extends Handler {
 
   override def handleMessage(msg: Message) {
     /* Do Nothing */

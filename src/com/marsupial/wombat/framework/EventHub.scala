@@ -3,7 +3,7 @@ package com.marsupial.wombat.framework
 import scala.collection.mutable
 import scala.ref.WeakReference
 
-import android.os.{Message, Handler}
+import android.os.Handler
 
 /**
  * A global event hub that allows different components of
@@ -14,24 +14,24 @@ object EventHub {
   /**
    * Subscribe to the global event stream
    */
-  case class Subscribe(who: Handler)
+  case object Subscribe
 
   /**
    * Unsubscribe from the global event stream
    */
-  case class Unsubscribe(who: Handler)
+  case object Unsubscribe
 
 }
 
-private[framework] class EventHub extends Handler.Callback with ActorConversion {
+private[framework] class EventHub extends Server {
   import EventHub._
 
   private val subscribers = mutable.Set.empty[WeakReference[Handler]]
 
-  def handleMessage(incoming: Message): Boolean = {
-    incoming.obj match {
-      case Subscribe(who)   => subscribers.add(new WeakReference[Handler](who))
-      case Unsubscribe(who) => purgeSubscribers(who)
+  override def handleRequest(incoming: AnyRef) {
+    incoming match {
+      case Subscribe   => subscribers.add(new WeakReference[Handler](requester))
+      case Unsubscribe => purgeSubscribers(requester)
       case a: AnyRef        => broadcastEvent(a)
     }
     true
