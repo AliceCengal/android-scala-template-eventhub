@@ -14,9 +14,9 @@ class AppService extends android.app.Application with EventfulApp {
     super.onCreate()
 
     val thread = new HandlerThread("ServiceThread")
+    thread.start()
     services = List(new ImageServer).
                  map(callback => new Handler(thread.getLooper, callback))
-
     services.foreach(_ ! Initialize(this))
   }
 

@@ -23,7 +23,7 @@ object EventHub {
 
 }
 
-private[service] class EventHub extends Handler.Callback with ActorConversion {
+private[framework] class EventHub extends Handler.Callback with ActorConversion {
   import EventHub._
 
   private val subscribers = mutable.Set.empty[WeakReference[Handler]]

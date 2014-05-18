@@ -2,7 +2,6 @@ package com.marsupial.wombat.service
 
 import com.marsupial.wombat.framework.Server
 import android.graphics.Bitmap
-import com.marsupial.wombat.service.ImageServer.{Image, DispatchImage}
 
 /**
  * Downloads and caches image on request
@@ -24,10 +23,12 @@ object ImageServer {
 }
 
 private[service] class ImageServer extends Server {
+  import ImageServer._
 
   override def handleRequest(req: AnyRef): Unit = {
     req match {
       case DispatchImage(url) => sendImage(url)
+      case _ =>
     }
   }
 

@@ -63,7 +63,7 @@ trait ActorConversion {
 trait ChattyFragment extends Fragment
                              with ActorConversion
 {
-  self: Handler.Callback with FragmentInjection =>
+  self: Handler.Callback with FragmentInjection[_ <:EventfulApp] =>
 
   implicit lazy val communicator = new Handler(this)
 
@@ -85,7 +85,7 @@ trait ChattyFragment extends Fragment
 trait ChattyActivity extends Activity
                              with ActorConversion
 {
-  self: Handler.Callback with ActivityInjection =>
+  self: Handler.Callback with ActivityInjection[_ <:EventfulApp] =>
 
   implicit lazy val communicator = new Handler(this)
 
