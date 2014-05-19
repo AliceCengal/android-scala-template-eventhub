@@ -32,9 +32,8 @@ private[framework] class EventHub extends Server {
     incoming match {
       case Subscribe   => subscribers.add(new WeakReference[Handler](requester))
       case Unsubscribe => purgeSubscribers(requester)
-      case a: AnyRef        => broadcastEvent(a)
+      case a: AnyRef   => broadcastEvent(a)
     }
-    true
   }
 
   private def purgeSubscribers(who: Handler): Unit = {

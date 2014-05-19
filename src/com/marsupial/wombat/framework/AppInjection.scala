@@ -3,23 +3,15 @@ package com.marsupial.wombat.framework
 import android.app.{Fragment, Activity}
 import android.os.Handler
 
-/**
- * Allow easy access to the Application object in Activity
- */
-trait ActivityInjection[APP <: EventfulApp] {
-  self: Activity =>
+trait AppInjection[APP <: EventfulApp] {
 
-  def app = self.getApplication.asInstanceOf[APP]
+  def app = this match {
+    case a: Activity => a.getApplication.asInstanceOf[APP]
+    case f: Fragment => f.getActivity.getApplication.asInstanceOf[APP]
+    case _           => throw new IllegalStateException(INHERITANCE_ERROR)
+  }
 
-}
-
-/**
- * Allow easy access to the Application object in Fragment
- */
-trait FragmentInjection[APP <: EventfulApp] {
-  self: Fragment =>
-
-  def app = self.getActivity.getApplication.asInstanceOf[APP]
+  private val INHERITANCE_ERROR = "This trait should only be mixed into Fragment or Activity"
 
 }
 
@@ -39,5 +31,3 @@ trait EventfulApp extends android.app.Application with ActorConversion {
   def eventHub: Handler = eventHubHandle
 
 }
-
-

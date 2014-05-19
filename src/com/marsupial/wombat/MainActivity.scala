@@ -3,7 +3,7 @@ package com.marsupial.wombat
 import android.app.Activity
 import android.os.{Message, Handler, Bundle}
 
-import com.marsupial.wombat.framework.{ActivityInjection, Helpers, ChattyActivity}
+import com.marsupial.wombat.framework.{AppInjection, Helpers, ChattyActivity}
 import com.marsupial.wombat.service.AppService
 
 /**
@@ -12,7 +12,7 @@ import com.marsupial.wombat.service.AppService
  * transition between Fragments.
  */
 class MainActivity extends Activity
-                           with ActivityInjection[AppService]
+                           with AppInjection[AppService]
                            with ChattyActivity
                            with Handler.Callback
                            with Helpers.EasyActivity
